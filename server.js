@@ -4,6 +4,10 @@ import morgan from "morgan";
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Connect MongoDB
+import { connectMongoDB } from "./src/config/dbConfig.js";
+connectMongoDB();
+
 app.use(morgan("dev"));
 app.use(express.json());
 

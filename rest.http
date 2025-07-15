@@ -7,7 +7,6 @@ POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "id": 1,
   "task": "Gaming",
   "hr": 40,
   "type": "entry"
@@ -21,10 +20,10 @@ PATCH {{baseUrl}}
 Content-Type: application/json
 
 {
-  "id": 3,
+  "_id": "68763cbb85381741bdc747cb",
   "type": "bad"
 }
 
 ### Delete the task list
-DELETE {{baseUrl}}/2
+DELETE {{baseUrl}}/68763cbb85381741bdc747cb
 
