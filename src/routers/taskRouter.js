@@ -16,8 +16,6 @@ import {
 //   next();
 // });
 
-// database table selecting
-
 router.get("/", async (req, res, next) => {
   try {
     // do your code
@@ -44,11 +42,16 @@ router.post("/", async (req, res, next) => {
     // insert task
     const result = await insertTask(req.body);
 
-    res.json({
-      status: "success",
-      message: "New task has been added successfully",
-      task: result,
-    });
+    result?._id
+      ? res.json({
+          status: "success",
+          message: "New task has been added successfully",
+          result,
+        })
+      : res.json({
+          status: "error",
+          message: "Unable to add the task, try again later",
+        });
   } catch (error) {
     console.log(error.message);
     res.json({
@@ -64,11 +67,16 @@ router.patch("/", async (req, res, next) => {
     const { _id, ...rest } = req.body;
     const result = await updateTask(_id, rest);
 
-    res.json({
-      status: "success",
-      message: "Your task has been updated",
-      task: result,
-    });
+    result?._id
+      ? res.json({
+          status: "success",
+          message: "Your task has been updated",
+          result,
+        })
+      : res.json({
+          status: "error",
+          message: "Unable to update the task, try again later",
+        });
   } catch (error) {
     console.log(error.message);
     res.json({
@@ -78,17 +86,26 @@ router.patch("/", async (req, res, next) => {
   }
 });
 
-router.delete("/:_id", async (req, res, next) => {
+router.delete("/", async (req, res, next) => {
   try {
     // do your code
-    const { _id } = req.params;
-    const result = await deleteTask(_id);
+    console.log(req.body);
+    const { ids } = req.body;
+    const result = await deleteTask(ids);
 
-    res.json({
-      status: "success",
-      message: "Your task has been deleted",
-      result,
-    });
+    console.log(result);
+
+    result?.deletedCount
+      ? res.json({
+          status: "success",
+          message: "Your task(s) has been deleted",
+          result,
+        })
+      : res.json({
+          status: "error",
+          message: "Unable to delete task(s), try again later",
+          result,
+        });
   } catch (error) {
     console.log(error.message);
     res.json({
